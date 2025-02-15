@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Lea Wellhead Records Demo</title>
+    <title>Video Knob Controller</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jacquard+12&display=swap');
         body {
@@ -41,9 +41,9 @@
         .knob {
             width: 60px;
             height: 60px;
-            border-radius: 60%;
+            border-radius: 50%;
             background-color: rgba( 0, 0, 0, 0.3);
-            border: 1px solid white;
+            border: 2px solid white;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -56,7 +56,6 @@
             height: 20px;
             background-color: white;
             top: 10px;
-            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -80,6 +79,7 @@
 <body>
     <div class="video-container">
         <video id="topVideo" src="video/TOP.mov" loop></video>
+        <script>document.getElementById('topVideo').addEventListener('loadedmetadata', function() { this.currentTime = 0; });</script>
         <div class="overlay" id="topOverlay"></div>
         <div class="knob-container">
             <div class="knob" id="topKnob">
@@ -112,7 +112,7 @@
     </div>
     
     <script>
-         document.querySelectorAll('.knob').forEach(knob => {
+        document.querySelectorAll('.knob').forEach(knob => {
             let isDragging = false;
             let angle = 0;
             let video = knob.closest('.video-container').querySelector('video');
@@ -120,15 +120,15 @@
             let volumeText = knob.closest('.knob-container').querySelector('.volume-text');
             
             knob.addEventListener('mousedown', startDrag);
-            knob.addEventListener('touchstart', startDrag);
+            knob.addEventListener('touchstart', startDrag, { passive: false });
 
             function startDrag(e) {
                 e.preventDefault();
                 isDragging = true;
-                document.addEventListener('mousemove', rotateKnob);
+                document.addEventListener('mousemove', rotateKnob, { passive: false });
                 document.addEventListener('mouseup', stopDrag);
-                document.addEventListener('touchmove', rotateKnob);
-                document.addEventListener('touchend', stopDrag);
+                document.addEventListener('touchmove', rotateKnob, { passive: false });
+                document.addEventListener('touchend', stopDrag, { passive: false });
             }
 
             function stopDrag() {
@@ -171,3 +171,4 @@
     </script>
 </body>
 </html>
+
